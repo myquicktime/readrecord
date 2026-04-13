@@ -53,6 +53,9 @@
           console.error('读取失败：', error);
           this.jsonData = '读取失败，请检查文件路径';
         }
+         const responsec = await axios.get('https://gitee.com/myquicktime/testWEEX/blob/newmaster/src/json/data/launcher.json');
+          console.log(responsec)
+        // https://gitee.com/myquicktime/testWEEX/blob/newmaster/src/json/data/launcher.json
       },
       todetail(item){
         this.title=item.title
