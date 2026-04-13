@@ -1,0 +1,281 @@
+[
+  {
+    "id": "019c9800-4737-7d71-b966-b773c7311074",
+    "update_at": "2026-02-26 05:43:49",
+    "create_at": "2026-02-26 03:31:21",
+    "book_id": "9022CD6E733E197DBA79AD01891A8C21",
+    "read_seconds": 599,
+    "word_count": 14171,
+    "date": "2026-02-26"
+  },
+  {
+    "id": "019c9876-eb4e-7d31-93f1-90e5e6ccdb2a",
+    "update_at": "2026-02-26 05:40:56",
+    "create_at": "2026-02-26 05:40:56",
+    "book_id": "9022CD6E733E197DBA79AD01891A8C21",
+    "read_seconds": 3000,
+    "word_count": 0,
+    "date": "2026-02-25"
+  },
+  {
+    "id": "019c9877-1905-7a60-843f-7e0eae6119ce",
+    "update_at": "2026-02-26 05:41:07",
+    "create_at": "2026-02-26 05:41:07",
+    "book_id": "9022CD6E733E197DBA79AD01891A8C21",
+    "read_seconds": 1800,
+    "word_count": 0,
+    "date": "2026-02-24"
+  },
+  {
+    "id": "019c9877-4393-7abb-bc8d-10eb414c31d0",
+    "update_at": "2026-02-26 05:41:18",
+    "create_at": "2026-02-26 05:41:18",
+    "book_id": "9022CD6E733E197DBA79AD01891A8C21",
+    "read_seconds": 1200,
+    "word_count": 0,
+    "date": "2026-02-19"
+  },
+  {
+    "id": "019c9894-eacf-7274-8191-be914de58fad",
+    "update_at": "2026-02-26 06:13:42",
+    "create_at": "2026-02-26 06:13:42",
+    "book_id": "A458B41FFE4302BC895DE99BD4FB1A5B",
+    "read_seconds": 78,
+    "word_count": 482,
+    "date": "2026-02-26"
+  },
+  {
+    "id": "019c9e41-ad32-7ad3-ad8d-0adf7a6ad858",
+    "update_at": "2026-02-27 08:42:45",
+    "create_at": "2026-02-27 08:40:30",
+    "book_id": "6174E027C547F6FF76BF360127A68530",
+    "read_seconds": 290,
+    "word_count": 8901,
+    "date": "2026-02-27"
+  },
+  {
+    "id": "019c9e49-650a-7b15-a898-56bf6480316d",
+    "update_at": "2026-02-27 08:50:06",
+    "create_at": "2026-02-27 08:48:56",
+    "book_id": "8EF6B5CAE0C977C575A73F62A256D9C2",
+    "read_seconds": 101,
+    "word_count": 28760,
+    "date": "2026-02-27"
+  },
+  {
+    "id": "019c9e4d-9116-75bf-b4da-7a0f4a25a858",
+    "update_at": "2026-02-27 08:54:40",
+    "create_at": "2026-02-27 08:53:29",
+    "book_id": "C09BAB1C8308E6B69E17F61F18E2044A",
+    "read_seconds": 80,
+    "word_count": 22837,
+    "date": "2026-02-27"
+  },
+  {
+    "id": "019c9e4f-3a6f-70a8-827c-0cc0f64dac08",
+    "update_at": "2026-02-27 08:56:48",
+    "create_at": "2026-02-27 08:55:18",
+    "book_id": "B3B713698F423BE89792397E90980F40",
+    "read_seconds": 120,
+    "word_count": 36024,
+    "date": "2026-02-27"
+  },
+  {
+    "id": "019c9e51-3293-7fb3-9cbb-a6732a351e5b",
+    "update_at": "2026-02-27 08:57:30",
+    "create_at": "2026-02-27 08:57:27",
+    "book_id": "1528955335884148CDE39CA01D988B52",
+    "read_seconds": 36,
+    "word_count": 12351,
+    "date": "2026-02-27"
+  },
+  {
+    "id": "019c9e51-f8c9-7671-b743-33d96e08cb7a",
+    "update_at": "2026-02-27 08:58:21",
+    "create_at": "2026-02-27 08:58:18",
+    "book_id": "5EDCD4AA91E2B623E4BC472CAC69DB5C",
+    "read_seconds": 46,
+    "word_count": 7900,
+    "date": "2026-02-27"
+  },
+  {
+    "id": "019c9e54-4696-709a-a8b5-3c0f16849061",
+    "update_at": "2026-02-27 09:04:20",
+    "create_at": "2026-02-27 09:00:49",
+    "book_id": "815A6C565EE477FD9502DA738ABEAF82",
+    "read_seconds": 160,
+    "word_count": 87243,
+    "date": "2026-02-27"
+  },
+  {
+    "id": "019c9e54-c8db-7fdf-81d2-7b909443f994",
+    "update_at": "2026-02-27 09:01:22",
+    "create_at": "2026-02-27 09:01:22",
+    "book_id": "4B1AB0571E66023CE59D0B93663368FB",
+    "read_seconds": 30,
+    "word_count": 30099,
+    "date": "2026-02-27"
+  },
+  {
+    "id": "019ca1de-2a80-75aa-99c5-758f8ef0233b",
+    "update_at": "2026-02-28 01:34:49",
+    "create_at": "2026-02-28 01:30:17",
+    "book_id": "490DC6CD9D989CBBA0E688A7C84D4878",
+    "read_seconds": 125,
+    "word_count": 24896,
+    "date": "2026-02-28"
+  },
+  {
+    "id": "019ca1e3-695d-75ce-a855-a0b185e8aa4e",
+    "update_at": "2026-02-28 01:38:15",
+    "create_at": "2026-02-28 01:36:01",
+    "book_id": "4B1AB0571E66023CE59D0B93663368FB",
+    "read_seconds": 183,
+    "word_count": 4928,
+    "date": "2026-02-28"
+  },
+  {
+    "id": "019ca1e7-811c-7c21-a577-49670889ab37",
+    "update_at": "2026-02-28 01:42:30",
+    "create_at": "2026-02-28 01:40:29",
+    "book_id": "5EDCD4AA91E2B623E4BC472CAC69DB5C",
+    "read_seconds": 198,
+    "word_count": 19509,
+    "date": "2026-02-28"
+  },
+  {
+    "id": "019ca1fb-7a0a-7545-b72c-e7825251de45",
+    "update_at": "2026-02-28 02:06:25",
+    "create_at": "2026-02-28 02:02:18",
+    "book_id": "27E9DA84F13FECDC8689B2D1A0515C25",
+    "read_seconds": 308,
+    "word_count": 8935,
+    "date": "2026-02-28"
+  },
+  {
+    "id": "019ca200-407d-70a0-8dc3-c173df5462fb",
+    "update_at": "2026-02-28 02:10:06",
+    "create_at": "2026-02-28 02:07:31",
+    "book_id": "C3325FBDC0F041247C7B17E17EAAD290",
+    "read_seconds": 210,
+    "word_count": 9413,
+    "date": "2026-02-28"
+  },
+  {
+    "id": "019ca203-265d-79ab-944c-03baeb2dcb49",
+    "update_at": "2026-02-28 02:15:32",
+    "create_at": "2026-02-28 02:10:41",
+    "book_id": "4959450B31F65B633782A8A7640D8293",
+    "read_seconds": 315,
+    "word_count": 14346,
+    "date": "2026-02-28"
+  },
+  {
+    "id": "019ca208-8d7f-7e7a-aeeb-0e0939602222",
+    "update_at": "2026-02-28 02:17:41",
+    "create_at": "2026-02-28 02:16:35",
+    "book_id": "2E673FF14A75EBE7AB55C4A1B5CEDCD2",
+    "read_seconds": 120,
+    "word_count": 19444,
+    "date": "2026-02-28"
+  },
+  {
+    "id": "019ca20c-7813-7e6d-aa4e-7e4f044f56be",
+    "update_at": "2026-02-28 02:23:36",
+    "create_at": "2026-02-28 02:20:52",
+    "book_id": "028CD5CBE2939F06B02C0709BDA71322",
+    "read_seconds": 346,
+    "word_count": 9443,
+    "date": "2026-02-28"
+  },
+  {
+    "id": "019ca212-9c9a-7a01-832d-c6f71f1c49fc",
+    "update_at": "2026-02-28 02:28:18",
+    "create_at": "2026-02-28 02:27:34",
+    "book_id": "B60C912745C27BDCE9B2E18046C4BEBB",
+    "read_seconds": 74,
+    "word_count": 5935,
+    "date": "2026-02-28"
+  },
+  {
+    "id": "019cac02-b40d-7ec7-9e39-d64b0861a189",
+    "update_at": "2026-03-02 00:46:38",
+    "create_at": "2026-03-02 00:46:24",
+    "book_id": "490DC6CD9D989CBBA0E688A7C84D4878",
+    "read_seconds": 64,
+    "word_count": 919,
+    "date": "2026-03-02"
+  },
+  {
+    "id": "019cad3c-460d-7838-b47e-1eb7a43b3e0d",
+    "update_at": "2026-03-02 06:29:15",
+    "create_at": "2026-03-02 06:28:54",
+    "book_id": "C872A06A2C05E7B37D7F12B48D6B2EEE",
+    "read_seconds": 54,
+    "word_count": 4537,
+    "date": "2026-03-02"
+  },
+  {
+    "id": "019cad3d-2587-7518-92c5-72f76e830554",
+    "update_at": "2026-03-02 06:29:51",
+    "create_at": "2026-03-02 06:29:51",
+    "book_id": "68A014F56D98BE3FE073A05AC9B8264A",
+    "read_seconds": 33,
+    "word_count": 1281,
+    "date": "2026-03-02"
+  },
+  {
+    "id": "019cad3d-c07e-716b-87d8-55db2d8880a8",
+    "update_at": "2026-03-02 06:30:43",
+    "create_at": "2026-03-02 06:30:31",
+    "book_id": "6E37ACA092E6C79B2C8D61596CAECD17",
+    "read_seconds": 42,
+    "word_count": 5691,
+    "date": "2026-03-02"
+  },
+  {
+    "id": "019cad40-0a4d-7685-acaf-d0e00bdb349f",
+    "update_at": "2026-03-02 06:34:58",
+    "create_at": "2026-03-02 06:33:01",
+    "book_id": "23861DD67C55D2EF1D21B64E9C58254A",
+    "read_seconds": 156,
+    "word_count": 9899,
+    "date": "2026-03-02"
+  },
+  {
+    "id": "019cad4b-3aff-7e58-a189-7dfa46f6817a",
+    "update_at": "2026-03-02 06:45:20",
+    "create_at": "2026-03-02 06:45:14",
+    "book_id": "7E9166DE59A323A3F6EF37EF6AC75DC3",
+    "read_seconds": 35,
+    "word_count": 3505,
+    "date": "2026-03-02"
+  },
+  {
+    "id": "019cad4d-d9f1-77a5-873d-703eab5a4b2d",
+    "update_at": "2026-03-02 06:48:11",
+    "create_at": "2026-03-02 06:48:06",
+    "book_id": "C82C6E3E038136AB277702B606AA6132",
+    "read_seconds": 41,
+    "word_count": 1816,
+    "date": "2026-03-02"
+  },
+  {
+    "id": "019cad5b-ded6-7262-8cca-d9cb8557bf39",
+    "update_at": "2026-03-02 07:04:32",
+    "create_at": "2026-03-02 07:03:25",
+    "book_id": "C25E5A7F09C82272E7A0208D995D353E",
+    "read_seconds": 97,
+    "word_count": 31462,
+    "date": "2026-03-02"
+  },
+  {
+    "id": "019cad5e-5927-7715-b91a-f2ab7ec6efc4",
+    "update_at": "2026-03-02 07:08:04",
+    "create_at": "2026-03-02 07:06:07",
+    "book_id": "DF0686F0E3A80CE1A7A4AD959364FC6F",
+    "read_seconds": 143,
+    "word_count": 39468,
+    "date": "2026-03-02"
+  }
+]
