@@ -1,7 +1,14 @@
 <template>
   <div class="hello">
-    <div @click="loadJsonData">刷新</div>
+    <!-- <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
+      <div>我的书架</div>
+      <div @click="loadJsonData">刷新</div>
+    </div> -->
     <div v-show="!showTime">
+      <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
+      <div>我的书架</div>
+      <div @click="loadJsonData">刷新</div>
+    </div>
       <div v-for="(item, index) in bookdata" :key="index" class="bookitem" @click="todetail(item)">
         <div>{{item.title}}</div>
         <div>{{item.author}}</div>
@@ -11,15 +18,8 @@
       </div>
     </div>
 
-    <div v-if="showTime">
-      {{title}}
-      <div v-for="(item, index) in detaillist" :key="index" @click="showTime=false">
-        {{item.date}}
-        {{item.read_seconds|timechange}}
-      </div>
-    </div>
     <bookList></bookList>
-    <bookTime></bookTime>
+    <bookTime v-if="showTime"  :detailitem="detailitem" @goback="goback"></bookTime>
   </div>
 </template>
 
@@ -50,7 +50,7 @@
         booklist: [],// 存储读取的JSON数据
         recordlist: [],
         title: '',
-        detaillist: [],
+        detailitem: [],
         showTime: false,
         bookdata: []
       };
@@ -119,11 +119,13 @@
 
       },
       todetail(item) {
-        this.title = item.title
-        this.detaillist = item.records
-        console.log(this.detaillist)
+        this.detailitem = item
+        console.log(this.detailitem)
         this.showTime = true
 
+      },
+      goback(){
+        this.showTime=false
       }
     }
   }
