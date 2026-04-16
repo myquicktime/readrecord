@@ -4,11 +4,12 @@
       <div>我的书架</div>
       <div @click="loadJsonData">刷新</div>
     </div> -->
-    <div v-show="!showTime">
+    <div v-show="showTime==1">
       <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
-      <div>我的书架</div>
-      <div @click="loadJsonData">刷新</div>
-    </div>
+        <div>我的书架</div>
+        <div @click="gotocount">统计</div>
+        <div @click="loadJsonData">刷新</div>
+      </div>
       <div v-for="(item, index) in bookdata" :key="index" class="bookitem" @click="todetail(item)">
         <div>{{item.title}}</div>
         <div>{{item.author}}</div>
@@ -18,14 +19,16 @@
       </div>
     </div>
 
+    <bookcount v-if="showTime==3"></bookcount>
     <bookList></bookList>
-    <bookTime v-if="showTime"  :detailitem="detailitem" @goback="goback"></bookTime>
-    <ceshi></ceshi>
-    <ceshi2></ceshi2>
+    <bookTime v-if="showTime==2" :detailitem="detailitem" @goback="goback"></bookTime>
+    <ceshi v-if="showTime==4"></ceshi>
+    <ceshi2 v-if="showTime==4"></ceshi2> 
   </div>
 </template>
 
 <script>
+  import bookcount from './bookcount.vue'
   import bookList from './bookList.vue'
   import bookTime from './bookTime.vue'
   import ceshi from './ceshi.vue'
@@ -38,6 +41,7 @@
       msg: String,
     },
     components: {
+      bookcount,
       bookList,
       bookTime,
       ceshi,
@@ -45,6 +49,9 @@
     },
     filters: {
       timechange(seconds) {
+         if(!seconds){
+          return 0
+        }
         const hours = Math.floor(seconds / 3600); // 计算小时数
         const minutes = Math.floor((seconds % 3600) / 60); // 计算剩余分钟数
         // const remainingSeconds = seconds % 60; // 计算剩余秒数
@@ -57,7 +64,7 @@
         recordlist: [],
         title: '',
         detailitem: [],
-        showTime: false,
+        showTime: 3,
         bookdata: [],
       };
     },
@@ -81,12 +88,14 @@
           let recordres = await fetch('https://buuqtcp111ku7t3r.public.blob.vercel-storage.com/read_record.json')
           let recorddata = await recordres.json()
           this.recordlist = recorddata; // 赋值到data中
-          localStorage.setItem('recordlist', JSON.stringify(recorddata))
+          // localStorage.setItem('recordlist', JSON.stringify(recorddata))
 
           console.log("读取成功", recorddata)
         } catch (err) {
           console.error("读取失败", err)
         }
+
+        // 获取每本书的阅读详情
         const bookdata = [];
         this.booklist.forEach(book => {
           let alltime = 0
@@ -110,6 +119,21 @@
         });
         this.bookdata = bookdata
         localStorage.setItem('bookdata', JSON.stringify(bookdata))
+
+
+
+
+        // 将每本书的书名填入阅读记录中
+        this.recordlist.map(record => {
+          this.booklist.find(book=>{
+            if(book.id==record.book_id){
+              record.bookname=book.title
+            }
+          })
+        })
+        console.log(this.recordlist)
+          localStorage.setItem('recordlist', JSON.stringify(this.recordlist))
+
       },
       getdata() {
         let booklist = localStorage.getItem('booklist');
@@ -127,11 +151,15 @@
       todetail(item) {
         this.detailitem = item
         console.log(this.detailitem)
-        this.showTime = true
+        this.showTime = 2
 
       },
-      goback(){
-        this.showTime=false
+      goback() {
+        this.showTime = 1
+      },
+      gotocount() {
+        this.showTime = 3
+
       }
     }
   }

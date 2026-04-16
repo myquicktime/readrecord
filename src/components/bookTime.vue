@@ -44,6 +44,9 @@
     },
     filters: {
       timechange(seconds) {
+         if(!seconds){
+          return 0
+        }
         const hours = Math.floor(seconds / 3600); // 计算小时数
         const minutes = Math.floor((seconds % 3600) / 60); // 计算剩余分钟数
         // const remainingSeconds = seconds % 60; // 计算剩余秒数
