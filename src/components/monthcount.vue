@@ -3,9 +3,9 @@
     <!-- 日期变换 -->
     <div style="display: flex;justify-content: space-around;align-items: center;  height: 50px;background-color: white;
     margin: 0 auto;width: 330px;border-radius: 5px;">
-      <div @click="lastDay">＜</div>
+      <div @click="lastMonth">＜</div>
       <div>{{targetDateStr}}</div>
-      <div @click="nextDay">＞</div>
+      <div @click="nextMonth">＞</div>
     </div>
     <!-- 中间四个数值 -->
     <div style="margin: 0 auto;width: 330px;">
@@ -16,7 +16,6 @@
         </div>
         <div class="readbox">
           <div>{{bookdailyToshow.length}}</div>
-
           <div>本月阅读书籍</div>
         </div>
       </div>
@@ -25,7 +24,6 @@
       本月阅读记录
     </div>
     <div style="margin: 0 auto;width: 330px;">
-
       <div v-for="(item, index) in bookdailyToshow" :key="index" class="booklist">
         <div>{{item.bookname}}</div>
         <div>{{item.read_seconds|timechange}}</div>
@@ -35,9 +33,6 @@
 </template>
 
 <script>
-
-
-  // import axios from 'axios';
   export default {
     name: 'monthcount',
     props: {
@@ -50,7 +45,6 @@
         }
         const hours = Math.floor(seconds / 3600); // 计算小时数
         const minutes = Math.floor((seconds % 3600) / 60); // 计算剩余分钟数
-        // const remainingSeconds = seconds % 60; // 计算剩余秒数
         return `${hours}时${minutes}分`;
       }
     },
@@ -83,7 +77,6 @@
         this.bookdailyToshow = this.recordlist.filter(
           (item) => {
             return item.date.substring(0, 7) === this.targetDateStr
-
           }
         )
         // 将本月同一本书的记录相加
@@ -94,13 +87,12 @@
         });
       },
       // 上月
-      lastDay() {
+      lastMonth() {
         this.targetDateStr = this.getNearMonth('last')
         this.monthdataInit()
       },
       // 下月
-      nextDay() {
-
+      nextMonth() {
         this.targetDateStr = this.getNearMonth('next')
         this.monthdataInit()
       },
@@ -112,13 +104,6 @@
         const year = date.getFullYear()
         const month = String(date.getMonth() + 1).padStart(2, '0') // 月份从0开始，补0
         return `${year}-${month}`
-      },
-      sumByDay(list) {
-        return list.reduce((res, item) => {
-          const key = item.date;
-          res[key] = (res[key] || 0) + item.read_seconds;
-          return res;
-        }, {})
       },
       mergeByBookId(arr) {
         this.summonth = 0
@@ -135,12 +120,6 @@
         });
         // 转回数组
         return Object.values(map);
-      },
-      formatDate(d) {
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const d_ = String(d.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d_}`;
       },
        //获取相邻的年月即2026-04.获取2026=03和2026-05
       getNearMonth(type) {

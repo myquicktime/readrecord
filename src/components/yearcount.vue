@@ -3,28 +3,30 @@
     <!-- 日期变换 -->
     <div style="display: flex;justify-content: space-around;align-items: center;  height: 50px;background-color: white;
     margin: 0 auto;width: 330px;border-radius: 5px;">
-      <div @click="lastWeek">＜</div>
-      <div>{{targetDateStr[0]}}-{{targetDateStr[6]}}</div>
-      <div @click="nextWeek">＞</div>
+      <div @click="lastYear">＜</div>
+      <div>{{targetDateStr}}</div>
+      <div @click="nextYear">＞</div>
     </div>
     <!-- 中间四个数值 -->
     <div style="margin: 0 auto;width: 330px;">
       <div style="display: flex;justify-content: space-between;">
         <div class="readbox">
-          <div>{{summonth|timechange}}</div>
-          <div>本周阅读</div>
+          <div>{{sumyear|timechange}}</div>
+          <div>本年阅读</div>
         </div>
         <div class="readbox">
           <div>{{bookdailyToshow.length}}</div>
-          <div>本周阅读书籍</div>
+          <div>本年阅读书籍</div>
         </div>
       </div>
     </div>
     <div style="margin: 0 auto;width: 330px;">
-      本周阅读记录
+      本年阅读记录
     </div>
     <div style="margin: 0 auto;width: 330px;">
+
       <div v-for="(item, index) in bookdailyToshow" :key="index" class="booklist">
+        <div>{{index+1}}</div>
         <div>{{item.bookname}}</div>
         <div>{{item.read_seconds|timechange}}</div>
       </div>
@@ -33,8 +35,11 @@
 </template>
 
 <script>
+
+
+  // import axios from 'axios';
   export default {
-    name: 'weekcount',
+    name: 'yearcount',
     props: {
       msg: String,
     },
@@ -45,92 +50,69 @@
         }
         const hours = Math.floor(seconds / 3600); // 计算小时数
         const minutes = Math.floor((seconds % 3600) / 60); // 计算剩余分钟数
+        // const remainingSeconds = seconds % 60; // 计算剩余秒数
         return `${hours}时${minutes}分`;
       }
     },
     data() {
       return {
-        targetDateStr: [],
+        targetDateStr: '',
         recordlist: [],
         bookdailyToshow: [],
-        summonth: 0
+        sumyear: 0
       };
     },
     mounted() {
       // 获取所有阅读记录
       this.dataget()
-      // 获取本周所有日期
-      this.targetDateStr = this.getThisWeekRange()
-      // 处理本周阅读记录
-      this.weekdataInit()
+      // 获取本年
+      let today = Date.now()
+      this.targetDateStr = this.timestampToDateStr(today)
+      // 处理本年阅读记录
+      this.yeardataInit()
     },
     methods: {
-      // 获取本周所有日期
-      getThisWeekRange() {
-        const now = new Date();
-        const day = now.getDay();
-
-        // 计算本周一
-        const monday = new Date(now);
-        monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
-
-        const week = [];
-        for (let i = 0; i < 7; i++) {
-          const date = new Date(monday);
-          date.setDate(monday.getDate() + i);
-          week.push(this.formatDate(date));
-        }
-        return week;
-      },
       // 获取所有阅读记录
       dataget() {
         let recordlist = localStorage.getItem('recordlist');
         this.recordlist = JSON.parse(recordlist) || [];
       },
-      // 处理本周阅读记录
-      weekdataInit() {
-        // 获取本周的记录
+      // 处理本年阅读记录
+      yeardataInit() {
+        // 获取本年的记录
         this.bookdailyToshow = this.recordlist.filter(
           (item) => {
-            if (this.targetDateStr.includes(item.date)) {
-              return item
-            }
+            return item.date.substring(0, 4) === this.targetDateStr
+
           }
         )
-        // 将本周同一本书的记录相加
+        // 将本年同一本书的记录相加
         this.bookdailyToshow = this.mergeByBookId(this.bookdailyToshow)
         // 排序
         this.bookdailyToshow.sort((a, b) => {
           return b.read_seconds - a.read_seconds;
         });
       },
-      // 上周
-      lastWeek() {
-        let newtargetDate = []
-        for (let i = 0; i < 7; i++) {
-          let currentDate = new Date(this.targetDateStr[i]);
-          currentDate.setDate(currentDate.getDate() - 7)
-          newtargetDate.push(this.formatDate(currentDate));
-        }
-        this.targetDateStr = newtargetDate
-        this.weekdataInit()
+      // 上年
+      lastYear() {
+        this.targetDateStr = String(Number(this.targetDateStr) - 1)
+        this.yeardataInit()
       },
-      // 下周
-      nextWeek() {
-        let newtargetDate = []
-        for (let i = 0; i < 7; i++) {
-          let currentDate = new Date(this.targetDateStr[i]);
-          currentDate.setDate(currentDate.getDate() + 7)
-          newtargetDate.push(this.formatDate(currentDate));
-        }
-        this.targetDateStr = newtargetDate
-        this.weekdataInit()
+      // 下年
+      nextYear() {
+        this.targetDateStr = String(Number(this.targetDateStr) + 1)
+        this.yeardataInit()
       },
 
       // 下方都是数据处理方法
 
+      timestampToDateStr(timestamp) {
+        const date = new Date(timestamp)
+        const year = date.getFullYear()
+        return `${year}`
+      },
       mergeByBookId(arr) {
-        this.summonth=0
+        this.sumyear = 0
         const map = {};
         arr.forEach(item => {
           const key = item.book_id;
@@ -139,18 +121,12 @@
           } else {
             map[key].read_seconds += item.read_seconds; // 累加秒数
           }
-          //统计本周总时长
-          this.summonth+=item.read_seconds
+          //统计本年总时长
+          this.sumyear += item.read_seconds
         });
         // 转回数组
         return Object.values(map);
       },
-      formatDate(d) {
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const d_ = String(d.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d_}`;
-      }
     }
   }
 </script>

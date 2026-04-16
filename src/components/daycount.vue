@@ -7,7 +7,7 @@
       <div>{{targetDateStr}}</div>
       <div @click="nextDay">＞</div>
     </div>
-     <!-- 中间四个数值 -->
+    <!-- 中间四个数值 -->
     <div style="margin: 0 auto;width: 330px;">
       <div style="display: flex;justify-content: space-between;">
         <div class="readbox">
@@ -24,7 +24,6 @@
       今日阅读记录
     </div>
     <div style="margin: 0 auto;width: 330px;">
-
       <div v-for="(item, index) in bookdailyToshow" :key="index" class="booklist">
         <div>{{item.bookname}}</div>
         <div>{{item.read_seconds|timechange}}</div>
@@ -34,9 +33,6 @@
 </template>
 
 <script>
-
-
-  // import axios from 'axios';
   export default {
     name: 'daycount',
     props: {
@@ -44,12 +40,11 @@
     },
     filters: {
       timechange(seconds) {
-        if(!seconds){
+        if (!seconds) {
           return 0
         }
         const hours = Math.floor(seconds / 3600); // 计算小时数
         const minutes = Math.floor((seconds % 3600) / 60); // 计算剩余分钟数
-        // const remainingSeconds = seconds % 60; // 计算剩余秒数
         return `${hours}时${minutes}分`;
       }
     },
@@ -58,30 +53,28 @@
         targetDateStr: '',
         recordlist: [],
         bookdailyToshow: [],
-        sumdaylist:[]
+        sumdaylist: []
       };
     },
     mounted() {
+      //获取数据表
       this.dataget()
+      // 获取今天日期
       let today = Date.now()
       this.targetDateStr = this.timestampToDateStr(today)
+      // 获取每天阅读总时长
       this.sumdaylist = this.sumByDay(this.recordlist)
-      console.log(this.sumdaylist)
-
+      // 获取本日阅读记录
+      this.dailydataInit(this.targetDateStr)
     },
     methods: {
       dataget() {
-
         let recordlist = localStorage.getItem('recordlist');
         this.recordlist = JSON.parse(recordlist) || [];
-        console.log(this.recordlist)
-
-
       },
       dailydataInit(targetDateStr) {
         this.bookdailyToshow = this.recordlist.filter(
           item => {
-            // item.showtime = this.formatSecondsToHMS(item.totalReadingTime)
             return item.date === targetDateStr
           }
         )
@@ -100,6 +93,9 @@
         this.targetDateStr = this.timestampToDateStr(currentDate.getTime())
         this.dailydataInit(this.targetDateStr)
       },
+      
+      // 下方都是数据处理方法
+
       timestampToDateStr(timestamp) {
         const date = new Date(timestamp)
         const year = date.getFullYear()
@@ -107,7 +103,7 @@
         const day = String(date.getDate()).padStart(2, '0') // 日期补0
         return `${year}-${month}-${day}`
       },
-       sumByDay(list) {
+      sumByDay(list) {
         return list.reduce((res, item) => {
           const key = item.date;
           res[key] = (res[key] || 0) + item.read_seconds;
@@ -127,6 +123,7 @@
     /* margin: 10px; */
     /* background-color: #b44040; */
   }
+
   .readbox {
     height: 60px;
     width: 150px;
@@ -134,6 +131,7 @@
     margin: 5px 0;
     background: white;
   }
+
   .booklist {
     height: 60px;
     background: rgb(242, 226, 227);

@@ -23,7 +23,7 @@
     <bookList></bookList>
     <bookTime v-if="showTime==2" :detailitem="detailitem" @goback="goback"></bookTime>
     <ceshi v-if="showTime==4"></ceshi>
-    <ceshi2 v-if="showTime==4"></ceshi2> 
+    <ceshi2 v-if="showTime==4"></ceshi2>
   </div>
 </template>
 
@@ -49,7 +49,7 @@
     },
     filters: {
       timechange(seconds) {
-         if(!seconds){
+        if (!seconds) {
           return 0
         }
         const hours = Math.floor(seconds / 3600); // 计算小时数
@@ -64,7 +64,7 @@
         recordlist: [],
         title: '',
         detailitem: [],
-        showTime: 3,
+        showTime: 1,
         bookdata: [],
       };
     },
@@ -74,6 +74,10 @@
     },
     methods: {
       async loadJsonData() {
+        localStorage.removeItem('booklist');
+        localStorage.removeItem('recordlist');
+        localStorage.removeItem('bookdata');
+
         try {
           let bookres = await fetch('https://buuqtcp111ku7t3r.public.blob.vercel-storage.com/book.json')
           let bookdata = await bookres.json()
@@ -125,14 +129,15 @@
 
         // 将每本书的书名填入阅读记录中
         this.recordlist.map(record => {
-          this.booklist.find(book=>{
-            if(book.id==record.book_id){
-              record.bookname=book.title
+          this.booklist.find(book => {
+            if (book.id == record.book_id) {
+              record.bookname = book.title
             }
           })
         })
         console.log(this.recordlist)
-          localStorage.setItem('recordlist', JSON.stringify(this.recordlist))
+        localStorage.setItem('recordlist', JSON.stringify(this.recordlist))
+        this.getdata()
 
       },
       getdata() {

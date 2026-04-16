@@ -14,6 +14,8 @@
     <daycount v-show="showcount=='day'"></daycount>
     <weekcount v-show="showcount=='week'"></weekcount>
     <monthcount v-show="showcount=='month'"></monthcount>
+    <yearcount v-show="showcount=='year'"></yearcount>
+    <allcount v-show="showcount=='all'"></allcount>
 
 
 
@@ -24,6 +26,8 @@
   import daycount from './daycount.vue'
   import weekcount from './weekcount.vue'
   import monthcount from './monthcount.vue'
+  import yearcount from './yearcount.vue'
+  import allcount from './allcount.vue'
 
 
   // import axios from 'axios';
@@ -35,7 +39,9 @@
     components: {
       daycount,
       weekcount,
-      monthcount
+      monthcount,
+      yearcount,
+      allcount
     },
     filters: {
       timechange(seconds) {
@@ -51,7 +57,7 @@
     data() {
       return {
 
-        showcount: 'month',
+        showcount: 'all',
         recordlist: [],
         sumdaylist: []
       };
