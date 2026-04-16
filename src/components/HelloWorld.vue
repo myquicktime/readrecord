@@ -20,12 +20,16 @@
 
     <bookList></bookList>
     <bookTime v-if="showTime"  :detailitem="detailitem" @goback="goback"></bookTime>
+    <ceshi></ceshi>
+    <ceshi2></ceshi2>
   </div>
 </template>
 
 <script>
   import bookList from './bookList.vue'
   import bookTime from './bookTime.vue'
+  import ceshi from './ceshi.vue'
+  import ceshi2 from './ceshi2.vue'
 
   // import axios from 'axios';
   export default {
@@ -35,7 +39,9 @@
     },
     components: {
       bookList,
-      bookTime
+      bookTime,
+      ceshi,
+      ceshi2
     },
     filters: {
       timechange(seconds) {
@@ -52,7 +58,7 @@
         title: '',
         detailitem: [],
         showTime: false,
-        bookdata: []
+        bookdata: [],
       };
     },
     mounted() {
