@@ -1,9 +1,5 @@
 <template>
   <div class="hello">
-    <!-- <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
-      <div>我的书架</div>
-      <div @click="loadJsonData">刷新</div>
-    </div> -->
     <div v-show="showTime==1">
       <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
         <div>我的书架</div>
@@ -14,12 +10,10 @@
         <div>{{item.title}}</div>
         <div>{{item.author}}</div>
         <div>{{item.alltime|timechange}}</div>
-        <!-- {{item.section_num}} -->
-        <!-- {{item.read_finish_time}} -->
       </div>
     </div>
 
-    <bookcount v-if="showTime==3"></bookcount>
+    <bookcount v-if="showTime==3" @goback="goback"></bookcount>
     <bookList></bookList>
     <bookTime v-if="showTime==2" :detailitem="detailitem" @goback="goback"></bookTime>
     <ceshi v-if="showTime==4"></ceshi>
@@ -64,12 +58,12 @@
         recordlist: [],
         title: '',
         detailitem: [],
-        showTime: 1,
+        showTime: 3,
         bookdata: [],
+        sumdaylist: []
       };
     },
     mounted() {
-      // this.loadJsonData();
       this.getdata()
     },
     methods: {
@@ -109,7 +103,6 @@
               alltime = alltime + record.read_seconds
             }
             return record.book_id === book.id
-
           });
           book.records = records
           book.alltime = alltime
@@ -124,9 +117,6 @@
         this.bookdata = bookdata
         localStorage.setItem('bookdata', JSON.stringify(bookdata))
 
-
-
-
         // 将每本书的书名填入阅读记录中
         this.recordlist.map(record => {
           this.booklist.find(book => {
@@ -137,6 +127,11 @@
         })
         console.log(this.recordlist)
         localStorage.setItem('recordlist', JSON.stringify(this.recordlist))
+
+        // 获取每天的总时长
+        this.sumdaylist = this.sumByDay(this.recordlist)
+        localStorage.setItem('sumdaylist', JSON.stringify(this.sumdaylist))
+
         this.getdata()
 
       },
@@ -150,22 +145,28 @@
         let bookdata = localStorage.getItem('bookdata');
         this.bookdata = JSON.parse(bookdata) || [];
 
-
-
       },
       todetail(item) {
         this.detailitem = item
         console.log(this.detailitem)
         this.showTime = 2
-
       },
       goback() {
         this.showTime = 1
       },
       gotocount() {
         this.showTime = 3
+      },
 
-      }
+
+      // 数据处理
+      sumByDay(list) {
+        return list.reduce((res, item) => {
+          const key = item.date;
+          res[key] = (res[key] || 0) + item.read_seconds;
+          return res;
+        }, {})
+      },
     }
   }
 </script>
@@ -175,7 +176,7 @@
   .bookitem {
     /* height: 60px; */
     margin: 20px 5px;
-    background-color: bisque;
+    background: rgb(242, 226, 227);
     text-align: left;
   }
 </style>

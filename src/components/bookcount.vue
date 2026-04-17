@@ -2,6 +2,7 @@
   <div class="wrap">
     <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
       <div>我的统计</div>
+      <div @click="goback">返回</div>
     </div>
     <div style="display: flex;flex-direction: row;">
 
@@ -12,9 +13,9 @@
       <div style="width: 50px;height: 50px;line-height: 50px;" @click="changecount('all')">总</div>
     </div>
     <daycount v-show="showcount=='day'"></daycount>
-    <weekcount v-show="showcount=='week'"></weekcount>
-    <monthcount v-show="showcount=='month'"></monthcount>
-    <yearcount v-show="showcount=='year'"></yearcount>
+    <weekcount v-if="showcount=='week'"></weekcount>
+    <monthcount v-if="showcount=='month'"></monthcount>
+    <yearcount v-if="showcount=='year'"></yearcount>
     <allcount v-show="showcount=='all'"></allcount>
 
 
@@ -57,16 +58,13 @@
     data() {
       return {
 
-        showcount: 'all',
+        showcount: 'week',
         recordlist: [],
         sumdaylist: []
       };
     },
     mounted() {
       this.dataget()
-
-      // this.sumdaylist = this.sumByDay(this.recordlist)
-      console.log(this.sumdaylist)
 
     },
     methods: {
@@ -82,13 +80,10 @@
 
       },
 
-      sumByDay(list) {
-        return list.reduce((res, item) => {
-          const key = item.date;
-          res[key] = (res[key] || 0) + item.read_seconds;
-          return res;
-        }, {})
-      },
+     
+      goback(){
+        this.$emit('goback');
+      }
     }
   }
 </script>

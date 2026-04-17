@@ -20,6 +20,8 @@
         </div>
       </div>
     </div>
+    <div ref="monthchart" style="width: 100%; height: 250px;"></div>
+
     <div style="margin: 0 auto;width: 330px;">
       本月阅读记录
     </div>
@@ -33,6 +35,8 @@
 </template>
 
 <script>
+  import * as echarts from 'echarts'
+
   export default {
     name: 'monthcount',
     props: {
@@ -53,7 +57,9 @@
         targetDateStr: '',
         recordlist: [],
         bookdailyToshow: [],
-        summonth: 0
+        summonth: 0,
+        myChart: null, // 图表实例
+        sumdaylist: []
       };
     },
     mounted() {
@@ -64,12 +70,16 @@
       this.targetDateStr = this.timestampToDateStr(today)
       // 处理本月阅读记录
       this.monthdataInit()
+      // 本月柱状图绘制
+      this.echartsinit()
     },
     methods: {
       // 获取所有阅读记录
       dataget() {
         let recordlist = localStorage.getItem('recordlist');
         this.recordlist = JSON.parse(recordlist) || [];
+        let sumdaylist = localStorage.getItem('sumdaylist');
+        this.sumdaylist = JSON.parse(sumdaylist) || [];
       },
       // 处理本月阅读记录
       monthdataInit() {
@@ -90,11 +100,69 @@
       lastMonth() {
         this.targetDateStr = this.getNearMonth('last')
         this.monthdataInit()
+        this.echartsinit()
       },
       // 下月
       nextMonth() {
         this.targetDateStr = this.getNearMonth('next')
         this.monthdataInit()
+        this.echartsinit()
+      },
+      // 本月柱状图绘制
+      echartsinit() {
+        // 获取图表数据
+        let echartdata = []
+        let xdata = []
+        for (let i = 0; i < 31; i++) {
+          const date = new Date(this.targetDateStr + '-01');
+          date.setDate(date.getDate() + i);
+          echartdata.push(this.sumdaylist[this.formatDate(date)] / 60);
+          xdata.push(String(i + 1))
+        }
+        // 🔥 防止在同一个 DOM 元素上，已经存在一个 ECharts 实例，你重复初始化了，导致冲突。
+        const existingInstance = echarts.getInstanceByDom(this.$refs.monthchart);
+        if (existingInstance) {
+          existingInstance.dispose();
+        }
+        // 图表绘制
+        this.myChart = echarts.init(this.$refs.monthchart)
+
+        // 2. 配置项
+        const option = {
+          // 提示框（鼠标悬浮显示）
+          tooltip: {},
+          // X轴
+          xAxis: {
+            data: xdata,
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
+          },
+          // Y轴
+          yAxis: {},
+          // 数据系列（柱状图核心）
+          series: [
+            {
+              // name: '销量',
+              type: 'bar', // 指定图表类型：柱状图
+              data: echartdata,
+              // 柱子颜色
+              itemStyle: {
+                color: '#f2e2e3'
+              }
+            }
+          ]
+        };
+        // 渲染
+        this.myChart.setOption(option)
+
+        // 响应式
+        window.addEventListener('resize', () => {
+          this.myChart.resize()
+        })
       },
 
       // 下方都是数据处理方法
@@ -121,7 +189,7 @@
         // 转回数组
         return Object.values(map);
       },
-       //获取相邻的年月即2026-04.获取2026=03和2026-05
+      //获取相邻的年月即2026-04.获取2026=03和2026-05
       getNearMonth(type) {
         const [year, month] = this.targetDateStr.split('-').map(Number)
         // 格式化补 0
@@ -148,6 +216,12 @@
           // 格式化补 0
           return fmt(nextYear, nextMonth)
         }
+      },
+      formatDate(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const d_ = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d_}`;
       }
     }
   }

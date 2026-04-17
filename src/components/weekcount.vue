@@ -20,6 +20,8 @@
         </div>
       </div>
     </div>
+    <div ref="weekchart" style="width: 100%; height: 250px;"></div>
+
     <div style="margin: 0 auto;width: 330px;">
       本周阅读记录
     </div>
@@ -33,6 +35,8 @@
 </template>
 
 <script>
+  import * as echarts from 'echarts'
+
   export default {
     name: 'weekcount',
     props: {
@@ -53,7 +57,9 @@
         targetDateStr: [],
         recordlist: [],
         bookdailyToshow: [],
-        summonth: 0
+        summonth: 0,
+        myChart: null, // 图表实例
+        sumdaylist: []
       };
     },
     mounted() {
@@ -63,6 +69,8 @@
       this.targetDateStr = this.getThisWeekRange()
       // 处理本周阅读记录
       this.weekdataInit()
+      // 本周柱状图绘制
+      this.echartsinit()
     },
     methods: {
       // 获取本周所有日期
@@ -86,6 +94,8 @@
       dataget() {
         let recordlist = localStorage.getItem('recordlist');
         this.recordlist = JSON.parse(recordlist) || [];
+        let sumdaylist = localStorage.getItem('sumdaylist');
+        this.sumdaylist = JSON.parse(sumdaylist) || [];
       },
       // 处理本周阅读记录
       weekdataInit() {
@@ -114,6 +124,7 @@
         }
         this.targetDateStr = newtargetDate
         this.weekdataInit()
+        this.echartsinit()
       },
       // 下周
       nextWeek() {
@@ -125,12 +136,72 @@
         }
         this.targetDateStr = newtargetDate
         this.weekdataInit()
+        this.echartsinit()
       },
+      // 本周柱状图绘制
+      echartsinit() {
+        // 获取图表数据
+        let echartdata = []
+        for (let i = 0; i < 7; i++) {
+          let sumday = this.sumdaylist[this.targetDateStr[i]]
+          echartdata.push(sumday / 60)
+        }
+        // 🔥 防止在同一个 DOM 元素上，已经存在一个 ECharts 实例，你重复初始化了，导致冲突。
+        const existingInstance = echarts.getInstanceByDom(this.$refs.weekchart);
+        if (existingInstance) {
+          existingInstance.dispose();
+        }
+        // 图表绘制
+        this.myChart = echarts.init(this.$refs.weekchart)
 
+        // 2. 配置项
+        const option = {
+          // 提示框（鼠标悬浮显示）
+          tooltip: {},
+          // X轴
+          xAxis: {
+            data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
+          },
+          // Y轴
+          yAxis: {},
+          // 数据系列（柱状图核心）
+          series: [
+            {
+              // name: '销量',
+              type: 'bar', // 指定图表类型：柱状图
+              data: echartdata,
+              // 柱子颜色
+              // itemStyle: {
+              //   color: '#f2e2e3'
+              // },
+              itemStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: '#f2e2e3' },
+                  { offset: 0.5, color: '#f2e2e3' },
+                  { offset: 1, color: '#f2e2e3' }
+                ])
+              },
+            }
+          ]
+        };
+        // 渲染
+        this.myChart.setOption(option)
+
+        // 响应式
+        window.addEventListener('resize', () => {
+          this.myChart.resize()
+        })
+      },
       // 下方都是数据处理方法
 
       mergeByBookId(arr) {
-        this.summonth=0
+        this.summonth = 0
         const map = {};
         arr.forEach(item => {
           const key = item.book_id;
@@ -140,7 +211,7 @@
             map[key].read_seconds += item.read_seconds; // 累加秒数
           }
           //统计本周总时长
-          this.summonth+=item.read_seconds
+          this.summonth += item.read_seconds
         });
         // 转回数组
         return Object.values(map);
@@ -175,7 +246,7 @@
 
   .booklist {
     /* height: 60px; */
-    background: rgb(242, 226, 227);
+    background: #f2e2e3;
     /* width: 80%; */
     margin: 5px 0;
     border-radius: 5px;

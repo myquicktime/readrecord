@@ -20,6 +20,8 @@
         </div>
       </div>
     </div>
+    <div ref="yearchart" style="width: 100%; height: 150px;"></div>
+
     <div style="margin: 0 auto;width: 330px;">
       本年阅读记录
     </div>
@@ -36,8 +38,8 @@
 
 <script>
 
+  import * as echarts from 'echarts'
 
-  // import axios from 'axios';
   export default {
     name: 'yearcount',
     props: {
@@ -59,7 +61,10 @@
         targetDateStr: '',
         recordlist: [],
         bookdailyToshow: [],
-        sumyear: 0
+        sumyear: 0,
+        myChart: null, // 图表实例
+        sumdaylist: [],
+        heatData: []
       };
     },
     mounted() {
@@ -70,12 +75,15 @@
       this.targetDateStr = this.timestampToDateStr(today)
       // 处理本年阅读记录
       this.yeardataInit()
+      this.echartsinit()
     },
     methods: {
       // 获取所有阅读记录
       dataget() {
         let recordlist = localStorage.getItem('recordlist');
         this.recordlist = JSON.parse(recordlist) || [];
+        let sumdaylist = localStorage.getItem('sumdaylist');
+        this.sumdaylist = JSON.parse(sumdaylist) || [];
       },
       // 处理本年阅读记录
       yeardataInit() {
@@ -102,6 +110,79 @@
       nextYear() {
         this.targetDateStr = String(Number(this.targetDateStr) + 1)
         this.yeardataInit()
+      },
+      echartsinit() {
+        // 获取图表数据
+        const dateKeys = Object.keys(this.sumdaylist);
+        for (let i = 0; i < dateKeys.length; i++) {
+          let item = [dateKeys[i], this.sumdaylist[dateKeys[i]]]
+          this.heatData.push(item)
+        }
+
+        // 图表绘制
+        // 🔥 防止在同一个 DOM 元素上，已经存在一个 ECharts 实例，你重复初始化了，导致冲突。
+        const existingInstance = echarts.getInstanceByDom(this.$refs.yearchart);
+        if (existingInstance) {
+          existingInstance.dispose();
+        }
+        // 初始化
+        this.myChart = echarts.init(this.$refs.yearchart)
+
+        // 配置项
+        const option = {
+          // 颜色范围
+          visualMap: {
+            min: 0,
+            max: 36000,
+            show: false, // 不显示颜色条
+            inRange: {
+              // GitHub 风格颜色
+              color: ['#c6e48b', '#7bc96f', '#239a3b', '#196127']
+            }
+          },
+          // 日历配置
+          calendar: {
+            range: ['2026-01-01', '2026-06-30'], // 显示哪一年
+            cellSize: [14, 14], // 每个格子大小
+            top: 40,
+            left: 20,
+            right: 2,
+            itemStyle: {
+              color: '#ebedf0',
+              borderWidth: 2,
+              borderColor: '#fff'
+            },
+            splitLine: {
+              show: false
+            },
+            dayLabel: {
+              //   show: false
+              color: '#787171',
+              firstDay: 1
+            },
+            monthLabel: {
+              //   show: false
+              color: '#787171'
+            }
+          },
+          // 热力系列
+          series: {
+            type: 'heatmap',
+            coordinateSystem: 'calendar',
+            data: this.heatData,
+            tooltip: {
+              formatter: '{b}: {c} 次'
+            }
+          }
+        }
+
+        // 渲染
+        this.myChart.setOption(option)
+
+        // 响应式
+        window.addEventListener('resize', () => {
+          this.myChart.resize()
+        })
       },
 
       // 下方都是数据处理方法
