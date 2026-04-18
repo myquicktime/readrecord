@@ -20,7 +20,8 @@
         </div>
       </div>
     </div>
-    <div ref="weekchart" style="width: 100%; height: 250px;"></div>
+    <div ref="weekchart"
+      style="width: 330px; height: 210px;margin:  0 auto;background-color: white;border-radius: 5px;"></div>
 
     <div style="margin: 0 auto;width: 330px;">
       本周阅读记录
@@ -169,23 +170,38 @@
             },
           },
           // Y轴
-          yAxis: {},
+          yAxis: {
+            // 分割线
+            splitLine: {
+              lineStyle: {
+                color: '#E5E5E5',  // Y轴横线颜色
+                width: '0.5'
+              }
+            }
+          },
+          // 内边距
+          grid: {
+            left: '5%',
+            right: '5%',
+            top: '12%',
+            bottom: '10%',
+            containLabel: true
+          },
           // 数据系列（柱状图核心）
           series: [
             {
-              // name: '销量',
               type: 'bar', // 指定图表类型：柱状图
               data: echartdata,
-              // 柱子颜色
-              // itemStyle: {
-              //   color: '#f2e2e3'
-              // },
+              // 柱子宽度
+              barWidth: '20',
+              // 柱子样式
               itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                   { offset: 0, color: '#f2e2e3' },
                   { offset: 0.5, color: '#f2e2e3' },
                   { offset: 1, color: '#f2e2e3' }
-                ])
+                ]),
+                borderRadius: [4, 4, 0, 0], // 顶部圆角，底部直角
               },
             }
           ]

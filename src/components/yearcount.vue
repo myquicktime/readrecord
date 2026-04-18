@@ -20,7 +20,11 @@
         </div>
       </div>
     </div>
-    <div ref="yearchart" style="width: 100%; height: 150px;"></div>
+    <div ref="yearchart"
+      style="width: 330px; height: 150px;margin:  0 auto;background-color: white;border-radius: 5px;"></div>
+
+    <div ref="monthofchart"
+      style="width: 330px; height: 150px;margin:  0 auto;background-color: white;border-radius: 5px;"></div>
 
     <div style="margin: 0 auto;width: 330px;">
       本年阅读记录
@@ -63,8 +67,10 @@
         bookdailyToshow: [],
         sumyear: 0,
         myChart: null, // 图表实例
+        myChart2: null, // 图表实例
         sumdaylist: [],
-        heatData: []
+        heatData: [],
+        summonthlist: []
       };
     },
     mounted() {
@@ -84,6 +90,8 @@
         this.recordlist = JSON.parse(recordlist) || [];
         let sumdaylist = localStorage.getItem('sumdaylist');
         this.sumdaylist = JSON.parse(sumdaylist) || [];
+        let summonthlist = localStorage.getItem('summonthlist');
+        this.summonthlist = JSON.parse(summonthlist) || [];
       },
       // 处理本年阅读记录
       yeardataInit() {
@@ -114,12 +122,13 @@
       echartsinit() {
         // 获取图表数据
         const dateKeys = Object.keys(this.sumdaylist);
+        dateKeys.sort((a, b) => a.localeCompare(b))//按时间排序
         for (let i = 0; i < dateKeys.length; i++) {
           let item = [dateKeys[i], this.sumdaylist[dateKeys[i]]]
           this.heatData.push(item)
         }
 
-        // 图表绘制
+        // 图表绘制(热力图)
         // 🔥 防止在同一个 DOM 元素上，已经存在一个 ECharts 实例，你重复初始化了，导致冲突。
         const existingInstance = echarts.getInstanceByDom(this.$refs.yearchart);
         if (existingInstance) {
@@ -145,8 +154,8 @@
             range: ['2026-01-01', '2026-06-30'], // 显示哪一年
             cellSize: [14, 14], // 每个格子大小
             top: 40,
-            left: 20,
-            right: 2,
+            left: 30,
+            right: 10,
             itemStyle: {
               color: '#ebedf0',
               borderWidth: 2,
@@ -182,6 +191,80 @@
         // 响应式
         window.addEventListener('resize', () => {
           this.myChart.resize()
+        })
+
+
+        // 获取图表数据(柱状图)
+        const dateKeys2 = Object.keys(this.summonthlist);
+        console.log(dateKeys2)
+        dateKeys2.sort((a, b) => a.localeCompare(b))//按时间排序
+        console.log(dateKeys2)
+
+        let echartdata = [0]
+        for (let i = 0; i < dateKeys2.length; i++) {
+          console.log(this.summonthlist[dateKeys2[i]])
+          echartdata.push(Math.floor(this.summonthlist[dateKeys2[i]] / 60))
+        }
+        console.log(echartdata)
+        const existingInstance2 = echarts.getInstanceByDom(this.$refs.monthofchart);
+        if (existingInstance2) {
+          existingInstance2.dispose();
+        }
+        // 图表绘制
+        this.myChart2 = echarts.init(this.$refs.monthofchart)
+
+        // 2. 配置项
+        const option2 = {
+          // 提示框（鼠标悬浮显示）
+          tooltip: {},
+          // X轴
+          xAxis: {
+            data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月',],
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
+          },
+          // Y轴
+          yAxis: {
+            // 分割线
+            splitLine: {
+              lineStyle: {
+                color: '#E5E5E5',  // Y轴横线颜色
+                width: '0.5'
+              }
+            }
+          },
+          // 内边距
+          grid: {
+            left: '5%',
+            right: '5%',
+            top: '12%',
+            bottom: '10%',
+            containLabel: true
+          },
+          // 数据系列（柱状图核心）
+          series: [
+            {
+              // name: '销量',
+              type: 'bar', // 指定图表类型：柱状图
+              data: echartdata,
+              // 柱子颜色
+              itemStyle: {
+                color: '#f2e2e3',
+                borderRadius: [1, 1, 0, 0], // 顶部圆角，底部直角
+              }
+            }
+          ]
+        };
+        // 渲染
+        this.myChart2.setOption(option2)
+
+        // 响应式
+        window.addEventListener('resize', () => {
+          this.myChart2.resize()
         })
       },
 

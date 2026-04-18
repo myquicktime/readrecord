@@ -109,7 +109,6 @@
           // 组装成 书籍 + 阅读记录 的结构
           bookdata.push(book);
         });
-        console.log(bookdata)
         // 排序
         bookdata.sort((a, b) => {
           return b.alltime - a.alltime;
@@ -125,7 +124,6 @@
             }
           })
         })
-        console.log(this.recordlist)
         localStorage.setItem('recordlist', JSON.stringify(this.recordlist))
 
         // 获取每天的总时长
@@ -133,6 +131,16 @@
         localStorage.setItem('sumdaylist', JSON.stringify(this.sumdaylist))
 
         this.getdata()
+
+
+         // 获取每月的总时长
+        let summonthlist = this.sumByMonth(this.recordlist)
+        localStorage.setItem('summonthlist', JSON.stringify(summonthlist))
+
+         // 获取每年的总时长
+        let sumyearlist = this.sumByYear(this.recordlist)
+        localStorage.setItem('sumyearlist', JSON.stringify(sumyearlist))
+
 
       },
       getdata() {
@@ -148,7 +156,6 @@
       },
       todetail(item) {
         this.detailitem = item
-        console.log(this.detailitem)
         this.showTime = 2
       },
       goback() {
@@ -163,6 +170,21 @@
       sumByDay(list) {
         return list.reduce((res, item) => {
           const key = item.date;
+          res[key] = (res[key] || 0) + item.read_seconds;
+          return res;
+        }, {})
+      },
+
+       sumByMonth(list) {
+        return list.reduce((res, item) => {
+          const key = item.date.substring(0,7);
+          res[key] = (res[key] || 0) + item.read_seconds;
+          return res;
+        }, {})
+      },
+       sumByYear(list) {
+        return list.reduce((res, item) => {
+          const key = item.date.substring(0,4);
           res[key] = (res[key] || 0) + item.read_seconds;
           return res;
         }, {})

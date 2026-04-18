@@ -58,7 +58,7 @@
     data() {
       return {
 
-        showcount: 'week',
+        showcount: 'year',
         recordlist: [],
         sumdaylist: []
       };
@@ -72,15 +72,9 @@
         this.showcount = type
       },
       dataget() {
-
         let recordlist = localStorage.getItem('recordlist');
         this.recordlist = JSON.parse(recordlist) || [];
-        console.log(this.recordlist)
-
-
       },
-
-     
       goback(){
         this.$emit('goback');
       }

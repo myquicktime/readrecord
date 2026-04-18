@@ -20,7 +20,7 @@
         </div>
       </div>
     </div>
-    <div ref="monthchart" style="width: 100%; height: 250px;"></div>
+    <div ref="monthchart" style="width: 330px; height: 210px;margin:  0 auto;background-color: white;border-radius: 5px;"></div>
 
     <div style="margin: 0 auto;width: 330px;">
       本月阅读记录
@@ -113,7 +113,10 @@
         // 获取图表数据
         let echartdata = []
         let xdata = []
-        for (let i = 0; i < 31; i++) {
+        let year=this.targetDateStr.substring(0,4)
+        let month=this.targetDateStr.substring(5,7)
+        let lastday=new Date(year, month, 0).getDate()//获取一个月的天数
+        for (let i = 0; i < lastday; i++) {
           const date = new Date(this.targetDateStr + '-01');
           date.setDate(date.getDate() + i);
           echartdata.push(this.sumdaylist[this.formatDate(date)] / 60);
@@ -142,7 +145,23 @@
             },
           },
           // Y轴
-          yAxis: {},
+          yAxis: {
+            // 分割线
+            splitLine: {
+              lineStyle: {
+                color: '#E5E5E5',  // Y轴横线颜色
+                width: '0.5'
+              }
+            }
+          },
+           // 内边距
+          grid: {
+            left: '5%',
+            right: '5%',
+            top: '12%',
+            bottom: '10%',
+            containLabel: true
+          },
           // 数据系列（柱状图核心）
           series: [
             {
@@ -151,7 +170,8 @@
               data: echartdata,
               // 柱子颜色
               itemStyle: {
-                color: '#f2e2e3'
+                color: '#f2e2e3',
+                borderRadius: [1, 1, 0, 0], // 顶部圆角，底部直角
               }
             }
           ]
