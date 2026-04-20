@@ -2,13 +2,13 @@
   <div class="wrap">
     <!-- 日期变换 -->
     <div style="display: flex;justify-content: space-around;align-items: center;  height: 50px;background-color: white;
-    margin: 0 auto;width: 330px;border-radius: 5px;">
+    margin: 0 auto;width: 93%;border-radius: 5px;">
       <div @click="lastDay">＜</div>
       <div>{{targetDateStr}}</div>
       <div @click="nextDay">＞</div>
     </div>
     <!-- 中间四个数值 -->
-    <div style="margin: 0 auto;width: 330px;">
+    <div style="margin: 0 auto;width: 93%;">
       <div style="display: flex;justify-content: space-between;">
         <div class="readbox">
           <div>{{sumdaylist[targetDateStr]|timechange}}</div>
@@ -20,10 +20,10 @@
         </div>
       </div>
     </div>
-    <div style="margin: 0 auto;width: 330px;">
+    <div style="margin: 0 auto;width: 93%;text-align: left;height: 40px;line-height: 40px;">
       今日阅读记录
     </div>
-    <div style="margin: 0 auto;width: 330px;">
+    <div style="margin: 0 auto;width: 93%;">
       <div v-for="(item, index) in bookdailyToshow" :key="index" class="booklist">
         <div>{{item.bookname}}</div>
         <div>{{item.read_seconds|timechange}}</div>
@@ -93,7 +93,7 @@
         this.targetDateStr = this.timestampToDateStr(currentDate.getTime())
         this.dailydataInit(this.targetDateStr)
       },
-      
+
       // 下方都是数据处理方法
 
       timestampToDateStr(timestamp) {
@@ -125,19 +125,23 @@
   }
 
   .readbox {
-    height: 60px;
-    width: 150px;
+    height: 45px;
+    width: 170px;
     border-radius: 5px;
     margin: 5px 0;
     background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px 0;
   }
 
   .booklist {
-    height: 60px;
     background: rgb(242, 226, 227);
-    /* width: 80%; */
-    margin: 5px 0;
+    margin: 10px 0;
     border-radius: 5px;
     text-align: left;
+    padding: 8px 10px;
+    box-sizing: border-box;
   }
 </style>

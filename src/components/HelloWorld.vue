@@ -1,10 +1,16 @@
 <template>
   <div class="hello">
     <div v-show="showTime==1">
-      <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
+      <!-- <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
         <div>我的书架</div>
         <div @click="gotocount">统计</div>
         <div @click="loadJsonData">刷新</div>
+      </div> -->
+      <div
+        style="display: flex;flex-direction: row;justify-content: space-between;background-color: #e8d9db;height: 45px;line-height: 45px;">
+        <div style="width: 60px;text-align: center;" @click="gotocount">统计</div>
+        <div style="width: 100px;">我的书架</div>
+        <div style="width: 60px;" @click="loadJsonData">刷新</div>
       </div>
       <div v-for="(item, index) in bookdata" :key="index" class="bookitem" @click="todetail(item)">
         <div>{{item.title}}</div>
@@ -133,11 +139,11 @@
         this.getdata()
 
 
-         // 获取每月的总时长
+        // 获取每月的总时长
         let summonthlist = this.sumByMonth(this.recordlist)
         localStorage.setItem('summonthlist', JSON.stringify(summonthlist))
 
-         // 获取每年的总时长
+        // 获取每年的总时长
         let sumyearlist = this.sumByYear(this.recordlist)
         localStorage.setItem('sumyearlist', JSON.stringify(sumyearlist))
 
@@ -175,16 +181,16 @@
         }, {})
       },
 
-       sumByMonth(list) {
+      sumByMonth(list) {
         return list.reduce((res, item) => {
-          const key = item.date.substring(0,7);
+          const key = item.date.substring(0, 7);
           res[key] = (res[key] || 0) + item.read_seconds;
           return res;
         }, {})
       },
-       sumByYear(list) {
+      sumByYear(list) {
         return list.reduce((res, item) => {
-          const key = item.date.substring(0,4);
+          const key = item.date.substring(0, 4);
           res[key] = (res[key] || 0) + item.read_seconds;
           return res;
         }, {})
@@ -196,9 +202,13 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .bookitem {
-    /* height: 60px; */
-    margin: 20px 5px;
+    margin: 10px auto;
     background: rgb(242, 226, 227);
     text-align: left;
+    width: 93%;
+    padding: 8px 10px;
+    border-radius: 5px;
+    box-sizing: border-box;
+
   }
 </style>

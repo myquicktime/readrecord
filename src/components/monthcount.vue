@@ -2,13 +2,13 @@
   <div class="wrap">
     <!-- 日期变换 -->
     <div style="display: flex;justify-content: space-around;align-items: center;  height: 50px;background-color: white;
-    margin: 0 auto;width: 330px;border-radius: 5px;">
+    margin: 0 auto;width: 93%;border-radius: 5px;">
       <div @click="lastMonth">＜</div>
       <div>{{targetDateStr}}</div>
       <div @click="nextMonth">＞</div>
     </div>
     <!-- 中间四个数值 -->
-    <div style="margin: 0 auto;width: 330px;">
+    <div style="margin: 0 auto;width: 93%;">
       <div style="display: flex;justify-content: space-between;">
         <div class="readbox">
           <div>{{summonth|timechange}}</div>
@@ -20,12 +20,13 @@
         </div>
       </div>
     </div>
-    <div ref="monthchart" style="width: 330px; height: 210px;margin:  0 auto;background-color: white;border-radius: 5px;"></div>
+    <div ref="monthchart" style="width: 93%; height: 210px;margin:  0 auto;background-color: white;border-radius: 5px;">
+    </div>
 
-    <div style="margin: 0 auto;width: 330px;">
+    <div style="margin: 0 auto;width: 93%;text-align: left;height: 40px;line-height: 40px;">
       本月阅读记录
     </div>
-    <div style="margin: 0 auto;width: 330px;">
+    <div style="margin: 0 auto;width: 93%;">
       <div v-for="(item, index) in bookdailyToshow" :key="index" class="booklist">
         <div>{{item.bookname}}</div>
         <div>{{item.read_seconds|timechange}}</div>
@@ -113,9 +114,9 @@
         // 获取图表数据
         let echartdata = []
         let xdata = []
-        let year=this.targetDateStr.substring(0,4)
-        let month=this.targetDateStr.substring(5,7)
-        let lastday=new Date(year, month, 0).getDate()//获取一个月的天数
+        let year = this.targetDateStr.substring(0, 4)
+        let month = this.targetDateStr.substring(5, 7)
+        let lastday = new Date(year, month, 0).getDate()//获取一个月的天数
         for (let i = 0; i < lastday; i++) {
           const date = new Date(this.targetDateStr + '-01');
           date.setDate(date.getDate() + i);
@@ -154,7 +155,7 @@
               }
             }
           },
-           // 内边距
+          // 内边距
           grid: {
             left: '5%',
             right: '5%',
@@ -258,19 +259,23 @@
   }
 
   .readbox {
-    height: 60px;
-    width: 150px;
+    height: 45px;
+    width: 170px;
     border-radius: 5px;
     margin: 5px 0;
     background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 10px 0;
   }
 
   .booklist {
-    /* height: 60px; */
     background: rgb(242, 226, 227);
-    /* width: 80%; */
-    margin: 5px 0;
+    margin: 10px 0;
     border-radius: 5px;
     text-align: left;
+    padding: 8px 10px;
+    box-sizing: border-box;
   }
 </style>

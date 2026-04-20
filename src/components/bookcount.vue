@@ -1,16 +1,16 @@
 <template>
   <div class="wrap">
-    <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
-      <div>我的统计</div>
-      <div @click="goback">返回</div>
+    <div
+      style="display: flex;flex-direction: row;justify-content: space-between;background-color: #e8d9db;height: 45px;line-height: 45px;">
+      <div style="width: 60px;text-align: center;" @click="goback">返回</div>
+      <div style="width: 100px;">我的统计</div>
+      <div style="width: 60px;"></div>
     </div>
-    <div style="display: flex;flex-direction: row;">
-
-      <div style="width: 50px;height: 50px;line-height: 50px;" @click="changecount('day')">日</div>
-      <div style="width: 50px;height: 50px;line-height: 50px;" @click="changecount('week')">周</div>
-      <div style="width: 50px;height: 50px;line-height: 50px;" @click="changecount('month')">月</div>
-      <div style="width: 50px;height: 50px;line-height: 50px;" @click="changecount('year')">年</div>
-      <div style="width: 50px;height: 50px;line-height: 50px;" @click="changecount('all')">总</div>
+    <div style="display: flex;flex-direction: row;width:93%;height: 50px;background-color:#f2e2e3;margin: 10px auto;
+    justify-content: space-around;align-items: center;">
+      <div style="width: 62px;height: 40px;line-height: 40px;border-radius: 10px;"
+        :class="{tabitem:showcount==item.type}" v-for="(item,index) in tabitem" :key="index"
+        @click="changecount(item.type)">{{item.label}}</div>
     </div>
     <daycount v-show="showcount=='day'"></daycount>
     <weekcount v-if="showcount=='week'"></weekcount>
@@ -57,7 +57,13 @@
     },
     data() {
       return {
-
+        tabitem: [
+          { label: '日', type: 'day' },
+          { label: '周', type: 'week' },
+          { label: '月', type: 'month' },
+          { label: '年', type: 'year' },
+          { label: '总', type: 'all' },
+        ],
         showcount: 'year',
         recordlist: [],
         sumdaylist: []
@@ -75,7 +81,7 @@
         let recordlist = localStorage.getItem('recordlist');
         this.recordlist = JSON.parse(recordlist) || [];
       },
-      goback(){
+      goback() {
         this.$emit('goback');
       }
     }
@@ -91,21 +97,8 @@
     /* margin: 10px; */
     /* background-color: #b44040; */
   }
-
-  .readbox {
-    height: 60px;
-    width: 150px;
-    border-radius: 5px;
-    margin: 5px 0;
-    background: white;
+  .tabitem {
+    background-color: white;
   }
 
-  .booklist {
-    height: 60px;
-    background: rgb(242, 226, 227);
-    /* width: 80%; */
-    margin: 5px 0;
-    border-radius: 5px;
-    text-align: left;
-  }
 </style>

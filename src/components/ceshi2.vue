@@ -104,7 +104,7 @@
 
 <style scoped>
   .heatmap-box {
-    width: 95%;
+    width: 93%;
     margin: 30px auto;
     /* padding: 10px; */
     background: #fff;
