@@ -1,11 +1,6 @@
 <template>
   <div class="hello">
     <div v-show="showTime==1">
-      <!-- <div style="display: flex;flex-direction: row;justify-content: space-between;background-color: pink;">
-        <div>我的书架</div>
-        <div @click="gotocount">统计</div>
-        <div @click="loadJsonData">刷新</div>
-      </div> -->
       <div
         style="display: flex;flex-direction: row;justify-content: space-between;background-color: #e8d9db;height: 45px;line-height: 45px;">
         <div style="width: 60px;text-align: center;" @click="gotocount">统计</div>
@@ -64,7 +59,7 @@
         recordlist: [],
         title: '',
         detailitem: [],
-        showTime: 3,
+        showTime: 1,
         bookdata: [],
         sumdaylist: []
       };
