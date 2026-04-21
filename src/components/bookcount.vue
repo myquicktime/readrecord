@@ -16,7 +16,7 @@
     <weekcount v-if="showcount=='week'"></weekcount>
     <monthcount v-if="showcount=='month'"></monthcount>
     <yearcount v-if="showcount=='year'"></yearcount>
-    <allcount v-show="showcount=='all'"></allcount>
+    <allcount v-if="showcount=='all'"></allcount>
 
 
 

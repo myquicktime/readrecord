@@ -5,13 +5,15 @@
       <div style="display: flex;justify-content: space-between;">
         <div class="readbox">
           <div>{{sumall|timechange}}</div>
-          <div>阅读书籍</div>
+          <div>总阅读时长</div>
         </div>
         <div class="readbox">
           <div>{{bookdailyToshow.length}}</div>
           <div>总阅读书籍</div>
         </div>
       </div>
+    </div>
+    <div ref="allchart" style="width: 93%; height: 210px;margin:  0 auto;background-color: white;border-radius: 5px;">
     </div>
     <div style="margin: 0 auto;width: 93%;text-align: left;height: 40px;line-height: 40px;">
       阅读记录
@@ -27,8 +29,7 @@
 </template>
 
 <script>
-
-
+  import * as echarts from 'echarts'
   export default {
     name: 'allcount',
     props: {
@@ -49,7 +50,9 @@
         targetDateStr: '',
         recordlist: [],
         bookdailyToshow: [],
-        sumall: 0
+        sumall: 0,
+        myChart: null,
+        sumyearlist: []
       };
     },
     mounted() {
@@ -57,12 +60,16 @@
       this.dataget()
       // 处理所有阅读记录
       this.yeardataInit()
+      // 总柱状图绘制
+      this.echartsinit()
     },
     methods: {
       // 获取所有阅读记录
       dataget() {
         let recordlist = localStorage.getItem('recordlist');
         this.recordlist = JSON.parse(recordlist) || [];
+        let sumyearlist = localStorage.getItem('sumyearlist');
+        this.sumyearlist = JSON.parse(sumyearlist) || [];
       },
       // 处理本年阅读记录
       yeardataInit() {
@@ -72,6 +79,83 @@
         this.bookdailyToshow.sort((a, b) => {
           return b.read_seconds - a.read_seconds;
         });
+      },
+      // 总柱状图绘制
+      echartsinit() {
+        // 获取图表数据
+        let echartdata = []
+        let xdata = []
+        let today = new Date()
+        let year = today.getFullYear()
+        for (let i = Number(year) - 4; i <= Number(year); i++) {
+          echartdata.push(Math.floor(this.sumyearlist[i] / 3600 )|| 0);
+          xdata.push(String(i))
+        }
+        console.log(xdata)
+        console.log(echartdata)
+        // 🔥 防止在同一个 DOM 元素上，已经存在一个 ECharts 实例，你重复初始化了，导致冲突。
+        const existingInstance = echarts.getInstanceByDom(this.$refs.allchart);
+        if (existingInstance) {
+          existingInstance.dispose();
+        }
+        // 图表绘制
+        this.myChart = echarts.init(this.$refs.allchart)
+
+        // 2. 配置项
+        const option = {
+          // 提示框（鼠标悬浮显示）
+          tooltip: {},
+          // X轴
+          xAxis: {
+            data: xdata,
+            axisTick: {
+              show: false
+            },
+            axisLine: {
+              show: false
+            },
+          },
+          // Y轴
+          yAxis: {
+            // 分割线
+            splitLine: {
+              lineStyle: {
+                color: '#E5E5E5',  // Y轴横线颜色
+                width: '0.5'
+              }
+            }
+          },
+          // 内边距
+          grid: {
+            left: '5%',
+            right: '5%',
+            top: '12%',
+            bottom: '10%',
+            containLabel: true
+          },
+          // 数据系列（柱状图核心）
+          series: [
+            {
+              // name: '销量',
+              type: 'bar', // 指定图表类型：柱状图
+              data: echartdata,
+                // 柱子宽度
+              barWidth: '24',
+              // 柱子颜色
+              itemStyle: {
+                color: '#f2e2e3',
+                borderRadius: [1, 1, 0, 0], // 顶部圆角，底部直角
+              }
+            }
+          ]
+        };
+        // 渲染
+        this.myChart.setOption(option)
+
+        // 响应式
+        window.addEventListener('resize', () => {
+          this.myChart.resize()
+        })
       },
 
       // 下方都是数据处理方法
