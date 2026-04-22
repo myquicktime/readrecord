@@ -254,7 +254,7 @@
 
   .readbox {
     height: 45px;
-    width: 170px;
+    width: 49%;
     border-radius: 5px;
     margin: 5px 0;
     background: white;

@@ -18,13 +18,17 @@
           <div>{{bookdailyToshow.length}}</div>
           <div>本年阅读书籍</div>
         </div>
+         <div class="readbox">
+          <div>{{heatData.length}}</div>
+          <div>本年阅读天数</div>
+        </div>
       </div>
     </div>
     <div ref="yearchart" style="width: 93%; height: 150px;margin:  0 auto;background-color: white;border-radius: 5px;">
     </div>
-
+    <div style="height: 5px;"></div>
     <div ref="monthofchart"
-      style="width: 93%; height: 150px;margin:  0 auto;background-color: white;border-radius: 5px;"></div>
+      style="width: 93%; height: 210px;margin:  0 auto;background-color: white;border-radius: 5px;"></div>
 
     <div style="margin: 0 auto;width: 93%;text-align: left;height: 40px;line-height: 40px;">
       本年阅读记录
@@ -112,20 +116,28 @@
       lastYear() {
         this.targetDateStr = String(Number(this.targetDateStr) - 1)
         this.yeardataInit()
+        this.echartsinit()
       },
       // 下年
       nextYear() {
         this.targetDateStr = String(Number(this.targetDateStr) + 1)
         this.yeardataInit()
+        this.echartsinit()
       },
       echartsinit() {
         // 获取图表数据
+        this.heatData=[]
         const dateKeys = Object.keys(this.sumdaylist);
         dateKeys.sort((a, b) => a.localeCompare(b))//按时间排序
         for (let i = 0; i < dateKeys.length; i++) {
-          let item = [dateKeys[i], this.sumdaylist[dateKeys[i]]]
-          this.heatData.push(item)
+          if (dateKeys[i].substring(0, 4) === this.targetDateStr) {
+            let item = [dateKeys[i], this.sumdaylist[dateKeys[i]]]
+            this.heatData.push(item)
+          }
         }
+        let startdate=this.targetDateStr+'-01-01'
+        let enddate=this.targetDateStr+'-06-30'
+        let range=[startdate,enddate]
 
         // 图表绘制(热力图)
         // 🔥 防止在同一个 DOM 元素上，已经存在一个 ECharts 实例，你重复初始化了，导致冲突。
@@ -150,7 +162,7 @@
           },
           // 日历配置
           calendar: {
-            range: ['2026-01-01', '2026-06-30'], // 显示哪一年
+            range: range, // 显示哪一年
             cellSize: [14, 14], // 每个格子大小
             top: 40,
             left: 30,
@@ -195,16 +207,17 @@
 
         // 获取图表数据(柱状图)
         const dateKeys2 = Object.keys(this.summonthlist);
-        console.log(dateKeys2)
         dateKeys2.sort((a, b) => a.localeCompare(b))//按时间排序
-        console.log(dateKeys2)
 
         let echartdata = [0]
-        for (let i = 0; i < dateKeys2.length; i++) {
-          console.log(this.summonthlist[dateKeys2[i]])
-          echartdata.push(Math.floor(this.summonthlist[dateKeys2[i]] / 60))
+        for (let i = 1; i <= 12; i++) {
+          let fmt = this.targetDateStr + '-' + String(i).padStart(2, '0')
+          if (this.summonthlist[fmt]) {
+            echartdata.push(Math.floor(this.summonthlist[fmt] / 3600))
+          } else {
+            echartdata.push(0)
+          }
         }
-        console.log(echartdata)
         const existingInstance2 = echarts.getInstanceByDom(this.$refs.monthofchart);
         if (existingInstance2) {
           existingInstance2.dispose();
@@ -240,7 +253,7 @@
           grid: {
             left: '5%',
             right: '5%',
-            top: '12%',
+            top: '14%',
             bottom: '10%',
             containLabel: true
           },
@@ -306,7 +319,7 @@
 
   .readbox {
     height: 45px;
-    width: 170px;
+    width: 32%;
     border-radius: 5px;
     margin: 5px 0;
     background: white;

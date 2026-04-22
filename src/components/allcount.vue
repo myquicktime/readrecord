@@ -11,6 +11,10 @@
           <div>{{bookdailyToshow.length}}</div>
           <div>总阅读书籍</div>
         </div>
+        <div class="readbox">
+          <div>{{readdaycount}}</div>
+          <div>总阅读天数</div>
+        </div>
       </div>
     </div>
     <div ref="allchart" style="width: 93%; height: 210px;margin:  0 auto;background-color: white;border-radius: 5px;">
@@ -52,7 +56,8 @@
         bookdailyToshow: [],
         sumall: 0,
         myChart: null,
-        sumyearlist: []
+        sumyearlist: [],
+        readdaycount: 0
       };
     },
     mounted() {
@@ -70,6 +75,11 @@
         this.recordlist = JSON.parse(recordlist) || [];
         let sumyearlist = localStorage.getItem('sumyearlist');
         this.sumyearlist = JSON.parse(sumyearlist) || [];
+        // 获取总阅读天数
+        let sumdaylist = localStorage.getItem('sumdaylist');
+        sumdaylist = JSON.parse(sumdaylist) || [];
+        const dateKeys = Object.keys(sumdaylist);
+        this.readdaycount = dateKeys.length
       },
       // 处理本年阅读记录
       yeardataInit() {
@@ -88,11 +98,9 @@
         let today = new Date()
         let year = today.getFullYear()
         for (let i = Number(year) - 4; i <= Number(year); i++) {
-          echartdata.push(Math.floor(this.sumyearlist[i] / 3600 )|| 0);
+          echartdata.push(Math.floor(this.sumyearlist[i] / 3600) || 0);
           xdata.push(String(i))
         }
-        console.log(xdata)
-        console.log(echartdata)
         // 🔥 防止在同一个 DOM 元素上，已经存在一个 ECharts 实例，你重复初始化了，导致冲突。
         const existingInstance = echarts.getInstanceByDom(this.$refs.allchart);
         if (existingInstance) {
@@ -139,7 +147,7 @@
               // name: '销量',
               type: 'bar', // 指定图表类型：柱状图
               data: echartdata,
-                // 柱子宽度
+              // 柱子宽度
               barWidth: '24',
               // 柱子颜色
               itemStyle: {
@@ -195,7 +203,7 @@
 
   .readbox {
     height: 45px;
-    width: 170px;
+    width: 32%;
     border-radius: 5px;
     margin: 5px 0;
     background: white;

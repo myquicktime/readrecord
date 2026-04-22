@@ -120,7 +120,7 @@
         for (let i = 0; i < lastday; i++) {
           const date = new Date(this.targetDateStr + '-01');
           date.setDate(date.getDate() + i);
-          echartdata.push(this.sumdaylist[this.formatDate(date)] / 60);
+          echartdata.push(Math.floor(this.sumdaylist[this.formatDate(date)] / 60));
           xdata.push(String(i + 1))
         }
         // 🔥 防止在同一个 DOM 元素上，已经存在一个 ECharts 实例，你重复初始化了，导致冲突。
@@ -260,7 +260,7 @@
 
   .readbox {
     height: 45px;
-    width: 170px;
+    width: 49%;
     border-radius: 5px;
     margin: 5px 0;
     background: white;
